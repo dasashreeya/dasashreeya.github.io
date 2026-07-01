@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shreeya's Summer · 2026</title>
+<meta name="description" content="Shreeya Dasa's summer 2026 scrapbook — everything shipped, learned, and explored. ML engineer: multi-agent systems, LLM inference, agent security.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Karla:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sand:#F2E8D5; --sand-deep:#E7D9BE; --paper:#FFFDF7;
+  --sea:#2E7D6B; --sea-deep:#1D5A4C; --foam:#9FD8C4; --sky:#CBE7EF;
+  --coral:#E2643B; --coral-deep:#A8431F; --gold:#E9A63C; --gold-deep:#8A5B10;
+  --ink:#3D3229; --ink-soft:#7A6A55; --ink-faint:#A5977E;
+  --tape-pink:rgba(240,201,216,.85); --tape-mint:rgba(191,218,204,.85); --tape-gold:rgba(246,214,154,.85);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--sand);color:var(--ink);font-family:'Karla',sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden}
+::selection{background:var(--foam);color:var(--sea-deep)}
+
+/* ---------- beach backdrop ---------- */
+.beach{position:fixed;inset:0;z-index:0;pointer-events:none}
+.beach svg{width:100%;height:100%}
+.wave-a{animation:drift 9s ease-in-out infinite alternate}
+.wave-b{animation:drift 13s ease-in-out infinite alternate-reverse}
+.sun-pulse{animation:sunbreathe 8s ease-in-out infinite}
+.palm-sway{transform-origin:190px 305px;animation:sway 7s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-38px)}}
+@keyframes sunbreathe{0%,100%{opacity:.85}50%{opacity:1}}
+@keyframes sway{from{transform:rotate(-1.4deg)}to{transform:rotate(1.6deg)}}
+@media (prefers-reduced-motion:reduce){.wave-a,.wave-b,.sun-pulse,.palm-sway{animation:none}}
+
+.page{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 22px 90px}
+
+/* ---------- header ---------- */
+header{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:20px 4px 6px}
+.who{display:flex;flex-direction:column}
+.who .name{font-family:'Fraunces',serif;font-size:21px;font-weight:600;color:var(--sea-deep)}
+.who .tag{font-size:13px;color:var(--ink-soft)}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav a{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);text-decoration:none;background:var(--paper);border:1px solid var(--sand-deep);border-radius:7px;padding:6px 12px;transition:transform .15s ease,background .15s ease}
+nav a:hover{background:var(--foam);transform:translateY(-2px)}
+nav a:focus-visible,button:focus-visible,.proj:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+
+/* ---------- hero ---------- */
+.hero{margin:44px auto 10px;max-width:640px;text-align:center;position:relative}
+.hero .banner{display:inline-block;background:var(--paper);border:1px solid var(--sand-deep);padding:10px 30px;transform:rotate(-1.4deg);position:relative;box-shadow:2px 3px 0 rgba(61,50,41,.08)}
+.hero .banner::before{content:"";position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(2deg);width:74px;height:20px;background:var(--tape-gold)}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(30px,5.4vw,44px);font-weight:600;color:var(--sea-deep)}
+.hero h1 .sun-word{color:var(--coral)}
+.hero .sub{margin-top:14px;font-size:15px;color:var(--ink-soft)}
+.hero .intro{margin:22px auto 0;max-width:560px;background:var(--paper);border:1px solid var(--sand-deep);padding:18px 22px;transform:rotate(.6deg);text-align:left;position:relative;box-shadow:2px 3px 0 rgba(61,50,41,.08)}
+.hero .intro::before{content:"";position:absolute;top:-9px;left:26px;width:58px;height:17px;background:var(--tape-mint);transform:rotate(-3deg)}
+.hero .intro .lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.8px;color:var(--coral-deep)}
+.hero .intro p{margin-top:6px;font-size:14.5px}
+.hero .intro .skills{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}
+.skills span{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--sand);border-radius:5px;padding:3px 9px;color:var(--sea-deep)}
+
+/* ---------- board ---------- */
+.board{margin-top:46px;display:grid;grid-template-columns:repeat(6,1fr);gap:20px;align-items:start}
+.scrap{background:var(--paper);border:1px solid var(--sand-deep);padding:18px 20px;position:relative;box-shadow:2px 3px 0 rgba(61,50,41,.08);transition:transform .22s ease,box-shadow .22s ease}
+.scrap:hover{transform:rotate(0deg) translateY(-4px) !important;box-shadow:4px 8px 18px rgba(61,50,41,.14)}
+.scrap::before{content:"";position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(-2deg);width:62px;height:18px;background:var(--tape-pink)}
+.scrap .lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.8px;color:var(--coral-deep);display:block;margin-bottom:8px}
+.r-l{transform:rotate(-1.3deg)} .r-r{transform:rotate(1.2deg)} .r-s{transform:rotate(-.7deg)}
+.span3{grid-column:span 3} .span2{grid-column:span 2} .span4{grid-column:span 4}
+@media(max-width:820px){.span3,.span4{grid-column:span 6}.span2{grid-column:span 3}}
+@media(max-width:560px){.span2{grid-column:span 6}.board{gap:24px}}
+
+/* shipped (hero card of the board) */
+.shipped{border:1px solid var(--sea);background:var(--paper)}
+.shipped::before{background:var(--tape-mint);width:78px}
+.shipped h2{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--sea-deep);margin-bottom:4px}
+.shipped .hint{font-size:12.5px;color:var(--ink-faint);margin-bottom:12px}
+.proj{display:flex;justify-content:space-between;align-items:baseline;gap:10px;width:100%;text-align:left;background:none;border:none;border-top:1px dashed var(--sand-deep);padding:12px 4px;cursor:pointer;font-family:'Karla',sans-serif;transition:background .15s ease}
+.proj:hover{background:var(--sand)}
+.proj .pn{font-size:16.5px;font-weight:600;color:var(--ink)}
+.proj .pm{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--gold-deep);white-space:nowrap}
+.proj .arrow{color:var(--coral);font-weight:600;transition:transform .2s ease}
+.proj[aria-expanded="true"] .arrow{transform:rotate(90deg)}
+.proj-sub{font-size:13px;color:var(--ink-soft);padding:0 4px 4px}
+
+/* idea / learning / oss / people notes */
+.note-idea{background:#FBEFD9;border-color:#EBD8AE}
+.note-idea::before{background:var(--tape-gold)}
+.note-learn{background:#E4F1F5;border-color:#C4DEE7}
+.note-oss{background:#FDF0EA;border-color:#F1D2C0}
+.note-oss::before{background:var(--tape-pink)}
+.note-people{background:#ECEAF8;border-color:#D4D0EE}
+.scrap h3{font-family:'Fraunces',serif;font-size:17px;font-weight:600;margin-bottom:6px}
+.scrap p{font-size:13.5px;color:var(--ink-soft)}
+.scrap p strong{color:var(--ink)}
+.collab{display:inline-block;margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--coral-deep);background:var(--paper);border:1px dashed var(--coral);border-radius:6px;padding:5px 11px;text-decoration:none}
+.collab:hover{background:var(--coral);color:#fff}
+
+/* tracker */
+.track-row{margin-top:9px}
+.track-row .tl{display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-soft)}
+.track-row .tl b{font-family:'IBM Plex Mono',monospace;font-weight:500;color:var(--ink)}
+.bar{height:8px;background:var(--sand);border-radius:4px;margin-top:4px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:4px}
+
+/* polaroids */
+.pola{background:var(--paper);border:1px solid var(--sand-deep);padding:10px 10px 12px;box-shadow:2px 3px 0 rgba(61,50,41,.08);transition:transform .22s ease,box-shadow .22s ease}
+.pola:hover{transform:rotate(0deg) translateY(-4px) !important;box-shadow:4px 8px 18px rgba(61,50,41,.14)}
+.pola .ph{height:150px;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11.5px;overflow:hidden}
+.pola img{width:100%;height:150px;object-fit:cover;display:block}
+.pola .cap{font-family:'Fraunces',serif;font-style:italic;font-size:13.5px;text-align:center;margin-top:8px;color:var(--ink-soft)}
+
+/* ---------- deep dives ---------- */
+.dives{margin-top:64px}
+.dives-head{text-align:center;margin-bottom:26px}
+.dives-head span{display:inline-block;font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--sea-deep);background:var(--paper);border:1px solid var(--sand-deep);padding:7px 24px;transform:rotate(1deg);position:relative}
+.dive{max-width:780px;margin:0 auto 22px;background:var(--paper);border:1px solid var(--sand-deep);box-shadow:2px 3px 0 rgba(61,50,41,.08);overflow:hidden}
+.dive summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:16px 22px;flex-wrap:wrap}
+.dive summary::-webkit-details-marker{display:none}
+.dive summary:hover{background:var(--sand)}
+.dive summary .dn{font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--ink)}
+.dive summary .dm{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-faint)}
+.dive-body{padding:2px 22px 22px;border-top:1px dashed var(--sand-deep)}
+.dive-links{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
+.dive-links a{font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-decoration:none;border-radius:6px;padding:5px 12px}
+.lk-demo{color:var(--sea-deep);background:#E1F2EC;border:1px solid var(--foam)}
+.lk-repo{color:var(--coral-deep);background:#FBEAE1;border:1px solid #F0C0A8}
+.dive-links a:hover{filter:brightness(.96)}
+.sec{margin-top:14px}
+.sec .sl{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.8px;color:var(--coral-deep)}
+.sec p{font-size:14.5px;margin-top:5px}
+.stack{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.stack span{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--sand);border-radius:5px;padding:3px 9px;color:var(--ink-soft)}
+.fieldnote{margin-top:14px;background:#FCF6E4;border:1px solid #EDE0B8;border-radius:8px;padding:11px 15px}
+.fieldnote .sl{color:var(--gold-deep)}
+.fieldnote p{font-size:13.5px;color:#6B5A28}
+
+/* ---------- footer ---------- */
+footer{margin-top:70px;text-align:center}
+.stamp{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--sea-deep);border:2px solid var(--sea);border-radius:8px;padding:8px 16px;transform:rotate(-2deg);letter-spacing:1px}
+footer .fl{margin-top:16px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+footer .fl a{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);text-decoration:none;background:var(--paper);border:1px solid var(--sand-deep);border-radius:7px;padding:6px 13px}
+footer .fl a:hover{background:var(--foam)}
+footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
+</style>
+</head>
+<body>
+
+<div class="beach" aria-hidden="true">
+<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMax slice">
+  <rect width="1200" height="800" fill="#F2E8D5"/>
+  <rect y="0" width="1200" height="360" fill="#EAF3EE" opacity=".55"/>
+  <circle class="sun-pulse" cx="990" cy="110" r="58" fill="#F3C06A" opacity=".85"/>
+  <circle cx="990" cy="110" r="86" fill="#F3C06A" opacity=".18"/>
+  <g opacity=".5">
+    <path class="wave-a" d="M-60,375 Q0,362 60,375 T180,375 T300,375 T420,375 T540,375 T660,375 T780,375 T900,375 T1020,375 T1140,375 T1260,375 T1380,375 L1380,430 L-60,430 Z" fill="#9FD8C4"/>
+  </g>
+  <g opacity=".4">
+    <path class="wave-b" d="M-60,405 Q0,394 60,405 T180,405 T300,405 T420,405 T540,405 T660,405 T780,405 T900,405 T1020,405 T1140,405 T1260,405 T1380,405 L1380,460 L-60,460 Z" fill="#6FB9A2"/>
+  </g>
+  <path d="M-20,440 Q300,415 620,442 T1220,438 L1220,800 L-20,800 Z" fill="#EFE0C2" opacity=".9"/>
+  <ellipse cx="330" cy="520" rx="60" ry="9" fill="#E3D2B0" opacity=".7"/>
+  <ellipse cx="860" cy="600" rx="80" ry="10" fill="#E3D2B0" opacity=".6"/>
+  <g class="palm-sway" opacity=".8">
+    <path d="M186,305 C182,240 176,190 162,140" stroke="#7A5B36" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <g fill="#3E8A6C">
+      <path d="M162,140 C120,118 84,120 52,140 C92,146 128,150 162,140 Z"/>
+      <path d="M162,140 C136,102 104,88 66,88 C102,110 134,128 162,140 Z"/>
+      <path d="M162,140 C176,98 200,74 238,64 C214,98 190,124 162,140 Z"/>
+      <path d="M162,140 C204,116 242,112 278,124 C238,136 198,142 162,140 Z"/>
+      <path d="M162,140 C186,124 220,124 252,138 C220,146 188,148 162,140 Z" opacity=".85"/>
+    </g>
+    <circle cx="170" cy="150" r="7" fill="#7A5B36"/>
+    <circle cx="182" cy="146" r="7" fill="#8A6B42"/>
+  </g>
+  <g stroke="#C9B890" stroke-width="2" opacity=".55" fill="none">
+    <path d="M420,560 q8,-8 16,0"/><path d="M448,568 q8,-8 16,0"/>
+    <path d="M980,520 q8,-8 16,0"/><path d="M1010,530 q8,-8 16,0"/>
+  </g>
+</svg>
+</div>
+
+<div class="page">
+
+<header>
+  <div class="who">
+    <span class="name">Shreeya Dasa</span>
+    <span class="tag">MS Applied ML @ UMD · multi-agent systems · LLM inference · agent security</span>
+  </div>
+  <nav aria-label="profile links">
+    <!-- TODO: replace # with real URLs -->
+    <a href="#" title="TODO: resume URL">resume ↓</a>
+    <a href="#" title="TODO: github URL">github</a>
+    <a href="https://linkedin.com/in/shreeyadasa">linkedin</a>
+    <a href="#" title="TODO: mailto:you@email">email</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="banner"><h1>shreeya's <span class="sun-word">summer</span> ☀ 2026</h1></div>
+  <p class="sub">a scrapbook, not a resume · everything shipped, learned &amp; explored this season</p>
+  <div class="intro">
+    <span class="lbl">WHO I AM</span>
+    <p>ML engineer finishing my MS in Applied Machine Learning at UMD (4.0), previously a software engineer at Juniper Networks. I spend my summers in SF shipping at hackathons. I excel at building <strong>multi-agent systems that actually work</strong>, making <strong>LLM inference faster and cheaper</strong>, and <strong>breaking agents before attackers do</strong>.</p>
+    <div class="skills">
+      <span>multi-agent systems</span><span>llm inference</span><span>agent security</span><span>rag pipelines</span><span>production infra</span>
+    </div>
+  </div>
+</section>
+
+<section class="board" aria-label="summer board">
+
+  <div class="scrap shipped span4 r-s">
+    <h2>Shipped this summer 🚢</h2>
+    <p class="hint">click any project for the deep dive — architecture, tradeoffs, what broke</p>
+
+    <button class="proj" data-dive="d-mcp" aria-expanded="false">
+      <span class="pn">MCP Auditor</span>
+      <span class="pm">harness hack · live <span class="arrow">→</span></span>
+    </button>
+    <p class="proj-sub">Multi-agent security auditor — six parallel SAFE-T probers scan MCP servers for threats.</p>
+
+    <button class="proj" data-dive="d-bounty" aria-expanded="false">
+      <span class="pn">BountyHunters</span>
+      <span class="pm">top 5 · YC AI growth hack <span class="arrow">→</span></span>
+    </button>
+    <p class="proj-sub">Household-level lead generation built on SF public property data.</p>
+
+    <button class="proj" data-dive="d-rerank" aria-expanded="false">
+      <span class="pn">llama3_rag_reranker</span>
+      <span class="pm">15/15 tests passing <span class="arrow">→</span></span>
+    </button>
+    <p class="proj-sub">My reranker paper, rebuilt honestly — LLaMA-3, MLX LoRA, RAGAS eval, 4-bit quant.</p>
+
+    <button class="proj" data-dive="d-fourth" aria-expanded="false">
+      <span class="pn">FourthTrimester</span>
+      <span class="pm">kane CLI hack day <span class="arrow">→</span></span>
+    </button>
+    <p class="proj-sub">Postpartum recovery tracker with an autonomous verification loop.</p>
+  </div>
+
+  <div class="scrap note-idea span2 r-r">
+    <span class="lbl">COOKING RIGHT NOW 🔥</span>
+    <h3>Household-level synthetic personas</h3>
+    <p>Expanding BountyHunters: turning public property data into synthetic household personas — a defensible B2B wedge for aggregators. Early exploration, might be a startup.</p>
+  </div>
+
+  <div class="scrap note-learn span2 r-l">
+    <span class="lbl">CURRENTLY LEARNING 📚</span>
+    <h3>LLM inference optimization</h3>
+    <p>Structured curriculum, stage by stage. <strong>Done:</strong> KV cache. <strong>Next:</strong> batching, quantization, speculative decoding, serving systems. Notes get pinned here as I go.</p>
+  </div>
+
+  <div class="scrap note-oss span2 r-r">
+    <span class="lbl">OPEN SOURCE ⌁</span>
+    <h3>Testing bird.ai's OSS version</h3>
+    <p>Currently testing the open-source release of bird.ai. Longer term: contributions to serving frameworks like vLLM.</p>
+    <!-- TODO: point collab link at email or a form -->
+    <a class="collab" href="#" title="TODO: contact link">looking to collaborate this summer →</a>
+  </div>
+
+  <div class="scrap note-people span2 r-l">
+    <span class="lbl">PEOPLE I MET ✦</span>
+    <h3>The SF summer network</h3>
+    <p>Coffee chats with ML engineering leaders and founders across SF — one referral offered, intros in progress. Hackathon teammates who became collaborators. The map keeps growing.</p>
+  </div>
+
+  <div class="scrap span2 r-r">
+    <span class="lbl">SUMMER TRACKER 📊</span>
+    <div class="track-row"><div class="tl"><span>hackathons</span><b>4 shipped</b></div><div class="bar"><i style="width:80%;background:var(--sea)"></i></div></div>
+    <div class="track-row"><div class="tl"><span>placements</span><b>top 5 ×1</b></div><div class="bar"><i style="width:20%;background:var(--gold)"></i></div></div>
+    <div class="track-row"><div class="tl"><span>inference curriculum</span><b>stage 1</b></div><div class="bar"><i style="width:25%;background:#6FA8C9"></i></div></div>
+    <div class="track-row"><div class="tl"><span>coffee chats</span><b>ongoing</b></div><div class="bar"><i style="width:55%;background:var(--coral)"></i></div></div>
+  </div>
+
+  <div class="pola span2 r-l">
+    <!-- TODO: replace with <img src="photos/hawaii.jpg" alt="..."> -->
+    <div class="ph" style="background:#BFDACC;color:#2F5D50">[ hawaii photo — add photos/hawaii.jpg ]</div>
+    <p class="cap">family trip · the reset before the sprint</p>
+  </div>
+
+  <div class="pola span2 r-r">
+    <!-- TODO: replace with <img src="photos/hackathon.jpg" alt="..."> -->
+    <div class="ph" style="background:#F6C9A8;color:#7A3E28">[ sf hackathon photo — add photos/hackathon.jpg ]</div>
+    <p class="cap">3am demo energy</p>
+  </div>
+
+</section>
+
+<section class="dives" id="dives">
+  <div class="dives-head"><span>the deep dives 🤿</span></div>
+
+  <details class="dive" id="d-mcp">
+    <summary><span class="dn">MCP Auditor</span><span class="dm">harness engineering hack · shipped in 24h</span></summary>
+    <div class="dive-body">
+      <div class="dive-links">
+        <!-- TODO: real URLs -->
+        <a class="lk-demo" href="#" title="TODO: demo URL">live demo →</a>
+        <a class="lk-repo" href="#" title="TODO: repo URL">repo →</a>
+      </div>
+      <div class="sec"><span class="sl">THE PROBLEM</span>
+        <p>MCP servers are being adopted faster than anyone audits them. Tool descriptions can hide prompt injection, exfiltration paths, and permission overreach — and nobody reads them.</p></div>
+      <div class="sec"><span class="sl">ARCHITECTURE</span>
+        <p>Six prober agents run in parallel, one per SAFE-T threat category, against the target server. Findings land in ClickHouse for scoring and reporting. Access is gated with x402 payments. Deployed on Render.</p>
+        <div class="stack"><span>aws bedrock</span><span>clickhouse</span><span>composio</span><span>x402</span><span>render</span></div></div>
+      <div class="sec"><span class="sl">DECISIONS &amp; TRADEOFFS</span>
+        <p>Parallel probers over one sequential agent: higher cost per audit, but each prober stays narrow and reliable — one threat model per context window.</p></div>
+      <div class="fieldnote"><span class="sl">FIELD NOTES</span>
+        <p>[ TODO: your honest 3am notes — what broke, what you'd change. This section is what makes the write-up credible. ]</p></div>
+    </div>
+  </details>
+
+  <details class="dive" id="d-bounty">
+    <summary><span class="dn">BountyHunters</span><span class="dm">YC AI growth hackathon · top 5</span></summary>
+    <div class="dive-body">
+      <div class="dive-links">
+        <a class="lk-demo" href="#" title="TODO: demo URL">live demo →</a>
+        <a class="lk-repo" href="#" title="TODO: repo URL">repo →</a>
+      </div>
+      <div class="sec"><span class="sl">THE PROBLEM</span>
+        <p>Lead generation for home services is city-block blunt. Public property data can sharpen it to the household level.</p></div>
+      <div class="sec"><span class="sl">ARCHITECTURE</span>
+        <p>Pipeline over SF public property records: ingest, profile at household granularity, surface qualified leads. Placed top 5 at the YC AI Growth Hackathon.</p>
+        <div class="stack"><span>sf open data</span><span>profiling pipeline</span><span>b2b wedge</span></div></div>
+      <div class="sec"><span class="sl">WHERE IT'S GOING</span>
+        <p>Now exploring household-level synthetic personas on the same data — aggregator-focused B2B looks like the defensible wedge. See "cooking right now" on the board.</p></div>
+      <div class="fieldnote"><span class="sl">FIELD NOTES</span>
+        <p>[ TODO: honest notes from the build. ]</p></div>
+    </div>
+  </details>
+
+  <details class="dive" id="d-rerank">
+    <summary><span class="dn">llama3_rag_reranker</span><span class="dm">15/15 tests passing · CI green</span></summary>
+    <div class="dive-body">
+      <div class="dive-links">
+        <a class="lk-repo" href="#" title="TODO: repo URL">repo →</a>
+      </div>
+      <div class="sec"><span class="sl">THE STORY</span>
+        <p>A faithful, working reconstruction of my reranker paper — built so every claim on my resume is verifiable in code. 15/15 is the test suite: fifteen of fifteen unit tests passing in CI.</p></div>
+      <div class="sec"><span class="sl">ARCHITECTURE</span>
+        <p>Generative LLaMA-3 reranking, LoRA fine-tuning on MLX, RAGAS-based evaluation, 4-bit quantization for local serving.</p>
+        <div class="stack"><span>llama-3</span><span>mlx lora</span><span>ragas</span><span>4-bit quant</span></div></div>
+      <div class="fieldnote"><span class="sl">FIELD NOTES</span>
+        <p>[ TODO: what the reconstruction taught you about the original paper's claims. ]</p></div>
+    </div>
+  </details>
+
+  <details class="dive" id="d-fourth">
+    <summary><span class="dn">FourthTrimester</span><span class="dm">kane CLI hack day</span></summary>
+    <div class="dive-body">
+      <div class="dive-links">
+        <a class="lk-repo" href="#" title="TODO: repo URL">repo →</a>
+      </div>
+      <div class="sec"><span class="sl">THE PROBLEM</span>
+        <p>Postpartum recovery is under-tracked. Built a recovery tracker in a day to test how far autonomous verification loops can carry a build.</p></div>
+      <div class="sec"><span class="sl">ARCHITECTURE</span>
+        <p>Recovery tracking app with an autonomous Kiro/Kane verification loop checking the build end-to-end.</p>
+        <div class="stack"><span>kiro/kane loop</span><span>autonomous verification</span></div></div>
+      <div class="fieldnote"><span class="sl">FIELD NOTES</span>
+        <p>[ TODO: honest notes from the build. ]</p></div>
+    </div>
+  </details>
+</section>
+
+<footer>
+  <span class="stamp">LAST PINNED · JULY 2026</span>
+  <div class="fl">
+    <!-- TODO: replace # with real URLs -->
+    <a href="#" title="TODO">resume ↓</a>
+    <a href="#" title="TODO">github</a>
+    <a href="https://linkedin.com/in/shreeyadasa">linkedin</a>
+    <a href="#" title="TODO">email me</a>
+  </div>
+  <p class="tiny">built by hand, pinned all summer · shreeya dasa © 2026</p>
+</footer>
+
+</div>
+
+<script>
+document.querySelectorAll('.proj').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var d=document.getElementById(btn.dataset.dive);
+    if(!d)return;
+    document.querySelectorAll('.proj').forEach(function(b){b.setAttribute('aria-expanded','false')});
+    btn.setAttribute('aria-expanded','true');
+    d.open=true;
+    d.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+</script>
+</body>
+</html>
