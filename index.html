@@ -31,7 +31,9 @@ body{background:var(--sand);color:var(--ink);font-family:'Karla',sans-serif;font
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-38px)}}
 @keyframes sunbreathe{0%,100%{opacity:.85}50%{opacity:1}}
 @keyframes sway{from{transform:rotate(-1.4deg)}to{transform:rotate(1.6deg)}}
-@media (prefers-reduced-motion:reduce){.wave-a,.wave-b,.sun-pulse,.palm-sway{animation:none}}
+.fog-drift{animation:fogmove 18s ease-in-out infinite alternate}
+@keyframes fogmove{from{transform:translateX(-30px)}to{transform:translateX(50px)}}
+@media (prefers-reduced-motion:reduce){.wave-a,.wave-b,.sun-pulse,.palm-sway,.fog-drift{animation:none}}
 
 .page{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:0 22px 90px}
 
@@ -104,11 +106,24 @@ nav a:focus-visible,button:focus-visible,.proj:focus-visible{outline:2px solid v
 .bar i{display:block;height:100%;border-radius:4px}
 
 /* polaroids */
-.pola{background:var(--paper);border:1px solid var(--sand-deep);padding:10px 10px 12px;box-shadow:2px 3px 0 rgba(61,50,41,.08);transition:transform .22s ease,box-shadow .22s ease}
+.pola{background:var(--paper);border:1px solid var(--sand-deep);padding:10px 10px 12px;box-shadow:2px 3px 0 rgba(61,50,41,.08);transition:transform .22s ease,box-shadow .22s ease;cursor:pointer;perspective:900px}
 .pola:hover{transform:rotate(0deg) translateY(-4px) !important;box-shadow:4px 8px 18px rgba(61,50,41,.14)}
-.pola .ph{height:150px;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11.5px;overflow:hidden}
+.pola .flip{position:relative;height:150px;transform-style:preserve-3d;transition:transform .6s ease}
+.pola.flipped .flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.face.back{transform:rotateY(180deg);background:#FCF6E4;display:flex;align-items:center;justify-content:center;padding:14px}
+.face.back p{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:#6B5A28;text-align:center;line-height:1.6}
+.pola .ph{height:150px;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11.5px}
 .pola img{width:100%;height:150px;object-fit:cover;display:block}
 .pola .cap{font-family:'Fraunces',serif;font-style:italic;font-size:13.5px;text-align:center;margin-top:8px;color:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){.pola .flip{transition:none}}
+
+/* drag + shuffle */
+.dragging{box-shadow:6px 12px 26px rgba(61,50,41,.2) !important;z-index:20;transition:none !important;cursor:grabbing;transform:rotate(0deg) !important}
+.board-tools{display:flex;justify-content:flex-end;margin:26px 4px -34px;position:relative;z-index:2}
+.board-tools button{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--sea-deep);background:var(--paper);border:1px dashed var(--sea);border-radius:7px;padding:6px 12px;cursor:pointer;transform:rotate(1.5deg)}
+.board-tools button:hover{background:var(--foam)}
+.bar i{transition:width 1.1s ease}
 
 /* ---------- deep dives ---------- */
 .dives{margin-top:64px}
@@ -155,6 +170,32 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
   <g opacity=".5">
     <path class="wave-a" d="M-60,375 Q0,362 60,375 T180,375 T300,375 T420,375 T540,375 T660,375 T780,375 T900,375 T1020,375 T1140,375 T1260,375 T1380,375 L1380,430 L-60,430 Z" fill="#9FD8C4"/>
   </g>
+  <g opacity=".62" stroke-linecap="round">
+    <path d="M300,352 L1220,352 L1220,362 L300,362 Z" fill="#C0452C"/>
+    <g fill="#C0452C">
+      <rect x="548" y="170" width="12" height="192"/><rect x="588" y="170" width="12" height="192"/>
+      <rect x="540" y="196" width="68" height="9" rx="2"/><rect x="540" y="246" width="68" height="9" rx="2"/><rect x="540" y="300" width="68" height="9" rx="2"/>
+      <rect x="928" y="170" width="12" height="192"/><rect x="968" y="170" width="12" height="192"/>
+      <rect x="920" y="196" width="68" height="9" rx="2"/><rect x="920" y="246" width="68" height="9" rx="2"/><rect x="920" y="300" width="68" height="9" rx="2"/>
+    </g>
+    <g stroke="#C0452C" stroke-width="4" fill="none">
+      <path d="M300,352 C380,220 480,178 574,178"/>
+      <path d="M574,178 C660,178 850,320 768,318 C700,318 640,240 574,178" opacity="0"/>
+      <path d="M574,178 C680,178 860,300 954,178" transform="translate(0,0)" opacity="0"/>
+      <path d="M574,178 C660,178 700,306 768,306 C842,306 880,178 954,178"/>
+      <path d="M954,178 C1050,178 1150,230 1220,330"/>
+    </g>
+    <g stroke="#C0452C" stroke-width="2">
+      <line x1="380" y1="286" x2="380" y2="352"/><line x1="440" y1="240" x2="440" y2="352"/><line x1="500" y1="204" x2="500" y2="352"/>
+      <line x1="640" y1="240" x2="640" y2="352"/><line x1="700" y1="288" x2="700" y2="352"/><line x1="768" y1="306" x2="768" y2="352"/>
+      <line x1="836" y1="288" x2="836" y2="352"/><line x1="896" y1="230" x2="896" y2="352"/>
+      <line x1="1030" y1="200" x2="1030" y2="352"/><line x1="1090" y1="232" x2="1090" y2="352"/><line x1="1150" y1="272" x2="1150" y2="352"/>
+    </g>
+  </g>
+  <g class="fog-drift" opacity=".5">
+    <ellipse cx="500" cy="345" rx="180" ry="26" fill="#F4F0E6"/>
+    <ellipse cx="820" cy="356" rx="220" ry="22" fill="#F4F0E6" opacity=".8"/>
+  </g>
   <g opacity=".4">
     <path class="wave-b" d="M-60,405 Q0,394 60,405 T180,405 T300,405 T420,405 T540,405 T660,405 T780,405 T900,405 T1020,405 T1140,405 T1260,405 T1380,405 L1380,460 L-60,460 Z" fill="#6FB9A2"/>
   </g>
@@ -188,11 +229,10 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
     <span class="tag">MS Applied ML @ UMD · multi-agent systems · LLM inference · agent security</span>
   </div>
   <nav aria-label="profile links">
-    <!-- TODO: replace # with real URLs -->
-    <a href="#" title="TODO: resume URL">resume ↓</a>
-    <a href="#" title="TODO: github URL">github</a>
-    <a href="https://linkedin.com/in/shreeyadasa">linkedin</a>
-    <a href="#" title="TODO: mailto:you@email">email</a>
+    <a href="Shreeya_Resume_Applied.pdf" download>resume ↓</a>
+    <a href="https://github.com/dasashreeya">github</a>
+    <a href="https://www.linkedin.com/in/shreeyadasa/">linkedin</a>
+    <a href="mailto:dasashreeya@gmail.com">email</a>
   </nav>
 </header>
 
@@ -201,16 +241,18 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
   <p class="sub">a scrapbook, not a resume · everything shipped, learned &amp; explored this season</p>
   <div class="intro">
     <span class="lbl">WHO I AM</span>
-    <p>ML engineer finishing my MS in Applied Machine Learning at UMD (4.0), previously a software engineer at Juniper Networks. I spend my summers in SF shipping at hackathons. I excel at building <strong>multi-agent systems that actually work</strong>, making <strong>LLM inference faster and cheaper</strong>, and <strong>breaking agents before attackers do</strong>.</p>
+    <p>ML engineer finishing my MS in Applied Machine Learning at UMD (3.9 GPA), previously a software engineer at Juniper Networks. I spend my summers in SF shipping at hackathons. I excel at building <strong>multi-agent systems that actually work</strong>, making <strong>LLM inference faster and cheaper</strong>, and <strong>breaking agents before attackers do</strong>.</p>
     <div class="skills">
       <span>multi-agent systems</span><span>llm inference</span><span>agent security</span><span>rag pipelines</span><span>production infra</span>
     </div>
   </div>
 </section>
 
+<div class="board-tools"><button id="shuffle" type="button">⤳ shuffle the pins</button></div>
+
 <section class="board" aria-label="summer board">
 
-  <div class="scrap shipped span4 r-s">
+  <div class="scrap shipped span4 r-s" data-drag>
     <h2>Shipped this summer 🚢</h2>
     <p class="hint">click any project for the deep dive — architecture, tradeoffs, what broke</p>
 
@@ -239,50 +281,60 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
     <p class="proj-sub">Postpartum recovery tracker with an autonomous verification loop.</p>
   </div>
 
-  <div class="scrap note-idea span2 r-r">
+  <div class="pola span2 r-l" data-flip tabindex="0" role="button" aria-label="flip polaroid">
+    <div class="flip">
+      <div class="face front">
+        <img src="photos/hawaii.jpg" alt="Hawaii with family" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="ph" style="background:#BFDACC;color:#2F5D50;display:none">[ add photos/hawaii.jpg ]</div>
+      </div>
+      <div class="face back"><p>family, ocean, zero laptops. the reset that made the sprint possible.</p></div>
+    </div>
+    <p class="cap">family trip, hawaii · click to flip</p>
+  </div>
+
+  <div class="scrap note-idea span2 r-r" data-drag>
     <span class="lbl">COOKING RIGHT NOW 🔥</span>
     <h3>Household-level synthetic personas</h3>
     <p>Expanding BountyHunters: turning public property data into synthetic household personas — a defensible B2B wedge for aggregators. Early exploration, might be a startup.</p>
   </div>
 
-  <div class="scrap note-learn span2 r-l">
+  <div class="scrap note-learn span2 r-l" data-drag>
     <span class="lbl">CURRENTLY LEARNING 📚</span>
     <h3>LLM inference optimization</h3>
     <p>Structured curriculum, stage by stage. <strong>Done:</strong> KV cache. <strong>Next:</strong> batching, quantization, speculative decoding, serving systems. Notes get pinned here as I go.</p>
   </div>
 
-  <div class="scrap note-oss span2 r-r">
+  <div class="scrap note-oss span2 r-r" data-drag>
     <span class="lbl">OPEN SOURCE ⌁</span>
-    <h3>Testing bird.ai's OSS version</h3>
-    <p>Currently testing the open-source release of bird.ai. Longer term: contributions to serving frameworks like vLLM.</p>
-    <!-- TODO: point collab link at email or a form -->
-    <a class="collab" href="#" title="TODO: contact link">looking to collaborate this summer →</a>
+    <h3>Stress-testing an OSS replica</h3>
+    <p>Currently testing an open-source replica of a commercial AI product. Longer term: contributions to serving frameworks like vLLM.</p>
+    <a class="collab" href="mailto:dasashreeya@gmail.com?subject=Let's collaborate">looking to collaborate this summer →</a>
   </div>
 
-  <div class="scrap note-people span2 r-l">
+  <div class="scrap note-people span2 r-l" data-drag>
     <span class="lbl">PEOPLE I MET ✦</span>
     <h3>The SF summer network</h3>
-    <p>Coffee chats with ML engineering leaders and founders across SF — one referral offered, intros in progress. Hackathon teammates who became collaborators. The map keeps growing.</p>
+    <p>So many founders. Coffee chats with ML engineering leaders across SF — one referral offered, intros in progress. Hackathon teammates who became collaborators. The energy here is ecstatic.</p>
+    <p style="margin-top:10px;font-family:'Fraunces',serif;font-style:italic;color:var(--sea-deep)">This is THE place to be — glad I'm spending my summer here. 🌉</p>
   </div>
 
-  <div class="scrap span2 r-r">
+  <div class="scrap span2 r-r" data-drag id="tracker-card">
     <span class="lbl">SUMMER TRACKER 📊</span>
-    <div class="track-row"><div class="tl"><span>hackathons</span><b>4 shipped</b></div><div class="bar"><i style="width:80%;background:var(--sea)"></i></div></div>
-    <div class="track-row"><div class="tl"><span>placements</span><b>top 5 ×1</b></div><div class="bar"><i style="width:20%;background:var(--gold)"></i></div></div>
-    <div class="track-row"><div class="tl"><span>inference curriculum</span><b>stage 1</b></div><div class="bar"><i style="width:25%;background:#6FA8C9"></i></div></div>
-    <div class="track-row"><div class="tl"><span>coffee chats</span><b>ongoing</b></div><div class="bar"><i style="width:55%;background:var(--coral)"></i></div></div>
+    <div class="track-row"><div class="tl"><span>hackathons</span><b>4 shipped</b></div><div class="bar"><i data-w="80%" style="width:0;background:var(--sea)"></i></div></div>
+    <div class="track-row"><div class="tl"><span>placements</span><b>top 5 ×1</b></div><div class="bar"><i data-w="20%" style="width:0;background:var(--gold)"></i></div></div>
+    <div class="track-row"><div class="tl"><span>inference curriculum</span><b>stage 1</b></div><div class="bar"><i data-w="25%" style="width:0;background:#6FA8C9"></i></div></div>
+    <div class="track-row"><div class="tl"><span>coffee chats</span><b>ongoing</b></div><div class="bar"><i data-w="55%" style="width:0;background:var(--coral)"></i></div></div>
   </div>
 
-  <div class="pola span2 r-l">
-    <!-- TODO: replace with <img src="photos/hawaii.jpg" alt="..."> -->
-    <div class="ph" style="background:#BFDACC;color:#2F5D50">[ hawaii photo — add photos/hawaii.jpg ]</div>
-    <p class="cap">family trip · the reset before the sprint</p>
-  </div>
-
-  <div class="pola span2 r-r">
-    <!-- TODO: replace with <img src="photos/hackathon.jpg" alt="..."> -->
-    <div class="ph" style="background:#F6C9A8;color:#7A3E28">[ sf hackathon photo — add photos/hackathon.jpg ]</div>
-    <p class="cap">3am demo energy</p>
+  <div class="pola span2 r-r" data-flip tabindex="0" role="button" aria-label="flip polaroid">
+    <div class="flip">
+      <div class="face front">
+        <img src="photos/hackathon.jpg" alt="SF hackathon" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="ph" style="background:#F6C9A8;color:#7A3E28;display:none">[ add photos/hackathon.jpg ]</div>
+      </div>
+      <div class="face back"><p>we submitted with 90 seconds left. the demo worked on the second try. i'd do it all again tomorrow.</p></div>
+    </div>
+    <p class="cap">3am demo energy · click to flip</p>
   </div>
 
 </section>
@@ -296,7 +348,7 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
       <div class="dive-links">
         <!-- TODO: real URLs -->
         <a class="lk-demo" href="#" title="TODO: demo URL">live demo →</a>
-        <a class="lk-repo" href="#" title="TODO: repo URL">repo →</a>
+        <a class="lk-repo" href="https://github.com/dasashreeya" title="replace with exact repo URL">repo →</a>
       </div>
       <div class="sec"><span class="sl">THE PROBLEM</span>
         <p>MCP servers are being adopted faster than anyone audits them. Tool descriptions can hide prompt injection, exfiltration paths, and permission overreach — and nobody reads them.</p></div>
@@ -306,7 +358,7 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
       <div class="sec"><span class="sl">DECISIONS &amp; TRADEOFFS</span>
         <p>Parallel probers over one sequential agent: higher cost per audit, but each prober stays narrow and reliable — one threat model per context window.</p></div>
       <div class="fieldnote"><span class="sl">FIELD NOTES</span>
-        <p>[ TODO: your honest 3am notes — what broke, what you'd change. This section is what makes the write-up credible. ]</p></div>
+        <p>Tested it against multiple open-source MCP repos and it flagged real issues correctly. Wrapped up last minute at the AWS Harness engineering hack. This was my first real dive into agentic systems and security — it was fun, and it's a direction I'm actively looking to explore further.</p></div>
     </div>
   </details>
 
@@ -315,7 +367,7 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
     <div class="dive-body">
       <div class="dive-links">
         <a class="lk-demo" href="#" title="TODO: demo URL">live demo →</a>
-        <a class="lk-repo" href="#" title="TODO: repo URL">repo →</a>
+        <a class="lk-repo" href="https://github.com/dasashreeya" title="replace with exact repo URL">repo →</a>
       </div>
       <div class="sec"><span class="sl">THE PROBLEM</span>
         <p>Lead generation for home services is city-block blunt. Public property data can sharpen it to the household level.</p></div>
@@ -325,7 +377,7 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
       <div class="sec"><span class="sl">WHERE IT'S GOING</span>
         <p>Now exploring household-level synthetic personas on the same data — aggregator-focused B2B looks like the defensible wedge. See "cooking right now" on the board.</p></div>
       <div class="fieldnote"><span class="sl">FIELD NOTES</span>
-        <p>[ TODO: honest notes from the build. ]</p></div>
+        <p>We pivoted multiple times before landing here — Similie was the inspiration that made the direction click. The gamification was the hardest part to get right. Top 5 felt earned.</p></div>
     </div>
   </details>
 
@@ -333,7 +385,7 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
     <summary><span class="dn">llama3_rag_reranker</span><span class="dm">15/15 tests passing · CI green</span></summary>
     <div class="dive-body">
       <div class="dive-links">
-        <a class="lk-repo" href="#" title="TODO: repo URL">repo →</a>
+        <a class="lk-repo" href="https://github.com/dasashreeya" title="replace with exact repo URL">repo →</a>
       </div>
       <div class="sec"><span class="sl">THE STORY</span>
         <p>A faithful, working reconstruction of my reranker paper — built so every claim on my resume is verifiable in code. 15/15 is the test suite: fifteen of fifteen unit tests passing in CI.</p></div>
@@ -341,7 +393,7 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
         <p>Generative LLaMA-3 reranking, LoRA fine-tuning on MLX, RAGAS-based evaluation, 4-bit quantization for local serving.</p>
         <div class="stack"><span>llama-3</span><span>mlx lora</span><span>ragas</span><span>4-bit quant</span></div></div>
       <div class="fieldnote"><span class="sl">FIELD NOTES</span>
-        <p>[ TODO: what the reconstruction taught you about the original paper's claims. ]</p></div>
+        <p>Honest version: I lost the original code — it's an old paper. Rather than let the claim sit unverifiable, I chose to rebuild it from scratch. The reconstruction is the receipt.</p></div>
     </div>
   </details>
 
@@ -349,7 +401,7 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
     <summary><span class="dn">FourthTrimester</span><span class="dm">kane CLI hack day</span></summary>
     <div class="dive-body">
       <div class="dive-links">
-        <a class="lk-repo" href="#" title="TODO: repo URL">repo →</a>
+        <a class="lk-repo" href="https://github.com/dasashreeya" title="replace with exact repo URL">repo →</a>
       </div>
       <div class="sec"><span class="sl">THE PROBLEM</span>
         <p>Postpartum recovery is under-tracked. Built a recovery tracker in a day to test how far autonomous verification loops can carry a build.</p></div>
@@ -357,7 +409,7 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
         <p>Recovery tracking app with an autonomous Kiro/Kane verification loop checking the build end-to-end.</p>
         <div class="stack"><span>kiro/kane loop</span><span>autonomous verification</span></div></div>
       <div class="fieldnote"><span class="sl">FIELD NOTES</span>
-        <p>[ TODO: honest notes from the build. ]</p></div>
+        <p>The full end-to-end self-healing loop ate most of the clock — worth it, but the UI paid the price. Next time: loop first, but timebox it, and leave real hours for the front end.</p></div>
     </div>
   </details>
 </section>
@@ -365,11 +417,10 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
 <footer>
   <span class="stamp">LAST PINNED · JULY 2026</span>
   <div class="fl">
-    <!-- TODO: replace # with real URLs -->
-    <a href="#" title="TODO">resume ↓</a>
-    <a href="#" title="TODO">github</a>
-    <a href="https://linkedin.com/in/shreeyadasa">linkedin</a>
-    <a href="#" title="TODO">email me</a>
+    <a href="Shreeya_Resume_Applied.pdf" download>resume ↓</a>
+    <a href="https://github.com/dasashreeya">github</a>
+    <a href="https://www.linkedin.com/in/shreeyadasa/">linkedin</a>
+    <a href="mailto:dasashreeya@gmail.com">email me</a>
   </div>
   <p class="tiny">built by hand, pinned all summer · shreeya dasa © 2026</p>
 </footer>
@@ -377,6 +428,9 @@ footer .tiny{margin-top:18px;font-size:12px;color:var(--ink-faint)}
 </div>
 
 <script>
+(function(){
+var reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 document.querySelectorAll('.proj').forEach(function(btn){
   btn.addEventListener('click',function(){
     var d=document.getElementById(btn.dataset.dive);
@@ -384,9 +438,78 @@ document.querySelectorAll('.proj').forEach(function(btn){
     document.querySelectorAll('.proj').forEach(function(b){b.setAttribute('aria-expanded','false')});
     btn.setAttribute('aria-expanded','true');
     d.open=true;
-    d.scrollIntoView({behavior:'smooth',block:'start'});
+    d.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
   });
 });
+
+document.querySelectorAll('[data-flip]').forEach(function(p){
+  var flip=function(){p.classList.toggle('flipped')};
+  p.addEventListener('click',function(e){if(!p.dataset.moved)flip()});
+  p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}});
+});
+
+var Z=10;
+if(window.matchMedia('(pointer: fine)').matches){
+  document.querySelectorAll('[data-drag],.pola').forEach(function(el){
+    el.style.touchAction='none';
+    var sx,sy,dx=0,dy=0,bx=0,by=0,active=false;
+    el.addEventListener('pointerdown',function(e){
+      if(e.target.closest('button,a,summary'))return;
+      active=true;sx=e.clientX;sy=e.clientY;bx=dx;by=dy;
+      el.dataset.moved='';el.setPointerCapture(e.pointerId);
+      el.classList.add('dragging');el.style.zIndex=++Z;
+    });
+    el.addEventListener('pointermove',function(e){
+      if(!active)return;
+      dx=bx+e.clientX-sx;dy=by+e.clientY-sy;
+      if(Math.abs(dx-bx)>4||Math.abs(dy-by)>4)el.dataset.moved='1';
+      el.style.translate=dx+'px '+dy+'px';
+    });
+    var end=function(){
+      if(!active)return;active=false;el.classList.remove('dragging');
+      setTimeout(function(){delete el.dataset.moved},50);
+    };
+    el.addEventListener('pointerup',end);
+    el.addEventListener('pointercancel',end);
+  });
+}
+
+var shuffle=document.getElementById('shuffle');
+if(shuffle)shuffle.addEventListener('click',function(){
+  document.querySelectorAll('.scrap,.pola').forEach(function(el){
+    var r=(Math.random()*4-2).toFixed(2);
+    el.style.transform='rotate('+r+'deg)';
+    el.style.zIndex='';
+  });
+});
+
+var bars=document.querySelectorAll('.bar i');
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){en.target.style.width=en.target.dataset.w;io.unobserve(en.target)}
+    });
+  },{threshold:.4});
+  bars.forEach(function(b){io.observe(b)});
+}else{
+  bars.forEach(function(b){b.style.width=b.dataset.w});
+}
+
+if(!reduced){
+  var sun=document.querySelector('.sun-pulse');
+  var palm=document.querySelector('.palm-sway');
+  var ticking=false;
+  window.addEventListener('scroll',function(){
+    if(ticking)return;ticking=true;
+    requestAnimationFrame(function(){
+      var y=window.scrollY;
+      if(sun)sun.setAttribute('transform','translate(0,'+Math.min(y*.06,40)+')');
+      if(palm)palm.style.translate='0 '+Math.min(y*.03,20)+'px';
+      ticking=false;
+    });
+  },{passive:true});
+}
+})();
 </script>
 </body>
 </html>
